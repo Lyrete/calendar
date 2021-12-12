@@ -3,7 +3,7 @@ Very simple GUI app to view a calendar, read tasks and add tasks to dates. Could
 
 Uses a ```.csv``` file as the database, example format available.
 
-#####To-do
+##### To-do
 
 :white_check_mark: Read/write tasks to file
 :white_square_button: Add view to show the current day's tasks
