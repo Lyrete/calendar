@@ -6,6 +6,7 @@ Uses a ```.csv``` file as the database, example format available.
 ##### To-do
 
 - :white_check_mark: Read/write tasks to file
-- :white_square_button: Add view to show the current day's tasks
-- :white_square_button: Add controls to browse months, years etc.
+- :white_check_mark: Add view to show the current day's tasks
+- :white_check_mark: Add controls to browse months, years etc.
 - :white_square_button: Add listeners so you can click on dates instead of typing
+- :white_square_button: Enable removing of tasks
