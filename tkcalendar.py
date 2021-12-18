@@ -6,8 +6,6 @@ class TkCalendar(calendar.Calendar):
     def __init__(self, busy_dates) -> None:
         super().__init__(0)
         self.busy_dates = busy_dates
-        print(busy_dates)
-        
 
     def formatmonth(self, master, year, month):
         dates = self.monthdatescalendar(year, month)
@@ -19,22 +17,22 @@ class TkCalendar(calendar.Calendar):
         for row, week in enumerate(dates):
             label_row = []
             for column, date in enumerate(week):
-                label = tkinter.Label(frame, text=date.day, font='Roboto 10')
+                label = tkinter.Label(frame, text=date.day, font='Roboto 10', relief='sunken', borderwidth=1, width=2)
                 label.grid(row = row, column = column)
 
                 label['bd'] = 4
                 if date.day == datetime.date.today().day:
-                    label['fg'] = 'red'
-                
-                
+                    label['bg'] = 'red'
+
                 if datetime.datetime.fromisoformat(str(date)) in self.busy_dates:
                     label['font'] = 'Roboto 10 bold'
-                
+                    label['bg'] = 'lightblue'
+
                 #Hide dates that don't actually belong to the running month
                 if(date.month != month):
-                    label['text'] = ''
+                    label.destroy()
 
                 label_row.append(label)
             self.labels.append(label_row)
-        
+
         return frame
