@@ -21,12 +21,15 @@ class TkCalendar(calendar.Calendar):
                 label.grid(row = row, column = column)
 
                 label['bd'] = 4
-                if date.day == datetime.date.today().day:
-                    label['bg'] = 'red'
 
+                #Highlight dates with tasks
                 if datetime.datetime.fromisoformat(str(date)) in self.busy_dates:
                     label['font'] = 'Roboto 10 bold'
                     label['bg'] = 'lightblue'
+
+                #Highlight current date
+                if date == datetime.date.today():
+                    label['bg'] = 'red'
 
                 #Hide dates that don't actually belong to the running month
                 if(date.month != month):
