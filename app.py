@@ -15,17 +15,6 @@ def addtask(date, task):
     else:
         tasks[date].append(task)
 
-#Load tasks from file into a dict on initial load
-tasks = {}
-try:
-    with open('tasks.csv', 'r',newline='') as file:
-        reader = csv.reader(file, delimiter=';')
-        for row in reader:
-            date = datetime.datetime.fromisoformat(row[0])
-            addtask(date, row[1])
-except FileNotFoundError: #Catch if the file doesn't exist
-    open('tasks.csv', 'w+')
-
 #Parse new task on button press and add it to the dict if it was valid
 def parsetask():
     date = date_entry.get()
@@ -39,15 +28,9 @@ def parsetask():
     except ValueError:
         messagebox.showerror(title='Wrong format', message='Please use dd.mm.yyyy format for date.')
 
-app = tkinter.Tk()
-app.title('Calendar')
-
-current_date = datetime.date.today()
-current = tkinter.StringVar()
-current.set(current_date.strftime("%B %Y"))
-
 def changemonth(date):
     global cal_frame
+    global app
     current.set(date.strftime("%B %Y"))
     newFrame = tkcalendar.formatmonth(app, date.year, date.month)
     if cal_frame is not None:
@@ -56,30 +39,49 @@ def changemonth(date):
     newFrame.pack()
 
 def prevmonth():
-    global cal_frame
+    global current
     #Update the title
     lastMonth = datetime.datetime.strptime(current.get(), "%B %Y") + datetime.timedelta(days=-1)
+    current.set(date.strftime("%B %Y"))
     changemonth(lastMonth)
 
 def nextmonth():
-    global cal_frame
+    global current
     #Update the title
     nextMonth = datetime.datetime.strptime(current.get(), "%B %Y") + datetime.timedelta(weeks=4, days=3)
+    current.set(date.strftime("%B %Y"))
     changemonth(nextMonth)
+
+#Load tasks from file into a dict on initial load
+tasks = {}
+try:
+    with open('tasks.csv', 'r',newline='') as file:
+        reader = csv.reader(file, delimiter=';')
+        for row in reader:
+            date = datetime.datetime.fromisoformat(row[0])
+            addtask(date, row[1])
+except FileNotFoundError: #Catch if the file doesn't exist
+    open('tasks.csv', 'w+')
+
+app = tkinter.Tk()
+app.title('Calendar')
+
+current_date = datetime.date.today()
+current = tkinter.StringVar()
+current.set(current_date.strftime("%B %Y"))
 
 tkcalendar = TkCalendar(list(tasks.keys()))
 
 header = tkinter.Frame(app)
 header.pack()
 
-tkinter.Button(header, text='<-', command=prevmonth).pack(side=tkinter.LEFT)
+tkinter.Button(header, text='<-', command=prevmonth).grid(row=0, column=0)
 monthLabel = tkinter.Label(header, textvariable=current, font="Roboto 14 bold")
-monthLabel.pack(side=tkinter.TOP)
-tkinter.Button(header, text='->', command=nextmonth).pack(side=tkinter.RIGHT)
+monthLabel.grid(row=0, column=1)
+tkinter.Button(header, text='->', command=nextmonth).grid(row=0, column=2)
 
 cal_frame = tkcalendar.formatmonth(app, current_date.year, current_date.month)
 cal_frame.pack()
-
 
 tasks_frame = tkinter.Frame(app)
 tasks_frame.pack(side=tkinter.BOTTOM)
